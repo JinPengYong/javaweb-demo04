@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace就是接口类-->
+<mapper namespace="com.cheer.dao.EmpMapper">
+    <!--开启二级缓存（分开关）-->
+    <cache></cache>
+    <!--<cache/>-->
+    <!--id是接口的方法名 useCache本条语句是否开启二级缓存-->
+    <select id="getEmp"  parameterType="Integer" resultType="com.cheer.model.Emp" useCache="true">
+        select * from emp where empNo = #{empNo}
+    </select>
+    <!--加入了别名，所以resultType可以直接写成类名-->
+    <select id="getM" parameterType="string" resultType="Emp">
+        select * from emp where eName like #{eName}
+        <!--select * from emp where eName like '%${}%',这个是statement,-->
+    </select>
+
+    <!--分页查询-->
+    <select id="getPageList" resultType="Emp">
+        select * from emp order by #{empNo}
+    </select>
+
+    <select id="getList" resultType="Emp">
+        select * from emp
+    </select>
+
+    <select id="findEmpByVo" parameterType="com.cheer.model.QueryVo" resultType="com.cheer.model.Emp">
+        select * from emp where eName like #{emp.eName}
+    </select>
+
+    <insert id="insert" >
+        insert into emp values (#{empNo},#{eName},#{job},#{mgr},#{hireDate},#{sal},#{com},#{deptNo})
+    </insert>
+
+    <update id="update">
+        update emp set empNo=#{empNo},eName=#{eName},job=#{job},mgr=#{mgr},hireDate=#{hireDate},sal=#{sal},com=#{com},deptNo=#{deptNo} where empNo=#{empNo}
+    </update>
+
+
+    <!--delete1方法传入参数是int类型，所以parameterType要写成int/Integer类型-->
+    <delete id="delete" parameterType="Integer">
+        delete from emp where empNo=#{empNo}
+    </delete>
+
+    <resultMap id="empResultMap222" type="emp">
+        <id property="empNo" column="empNo"></id>
+        <result property="eName" column="eName"></result>
+        <result property="sal" column="sal"></result>
+        <result property="job" column="job"></result>
+        <result property="mgr" column="mgr"></result>
+        <result property="hireDate" column="hireDate"></result>
+    </resultMap>
+    <select id="getEmpResultMap" resultMap="empResultMap222">
+        select * from emp where empNo = #{empNo}
+    </select>
+
+    <select id="getEmpMap" resultType="Map">
+        select * from emp e left join dept d on e.deptno = d.deptno where empNo = #{empNo}
+    </select>
+
+    <select id="getList2" resultType="com.cheer.model.Emp" parameterType="com.cheer.model.Emp">
+        select * from emp where 1=1
+        <if test="eName !=null ">
+            and eName=#{eName}
+        </if>
+    </select>
+
+    <select id="getEmpMap1" resultMap="empResultMap222">
+        select * from emp where 1=1
+        <if test="sal !=null ">
+            and sal=#{sal}
+        </if>
+    </select>
+
+</mapper>
