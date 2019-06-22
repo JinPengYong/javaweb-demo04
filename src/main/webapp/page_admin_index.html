@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table {
+            margin: 50px auto 0 auto;
+            border-collapse: collapse;
+            text-align: center;
+            vertical-align: center;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            width: 200px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+<form action="servlet/UploadServlet" method="post" enctype="multipart/form-data">
+    <div class="cell">
+        <label for="avatar">考试题目导入</label><input type="file" name="avatar" id="avatar">
+        <button type="submit">确定</button>
+    </div>
+</form>
+<scipt>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+        $(function () {
+            let $table=$("<table></table>");
+
+            let $headerTr=$("<tr></tr>");
+            $("body").append($table);
+
+            $table.append($headerTr);
+            let header = ["序号", "题干"];
+            let question=["id","title"];
+            for (let i = 0; i <header.length ; i++) {
+                let $th=$("<th></th>");
+                $($headerTr).append($th);
+                $th.html(header[i]);
+            }
+
+            let url="servlet/QuestionListServlet";
+
+            $.ajax({
+                url:url,
+                method:"GET",
+                dataType:"json",
+                success:function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        let $tr=$("<tr></tr>");
+                        $("table").append($tr);
+                        for (let j = 0; j < header.length; j++) {
+                            let $td= $("<td></td>");
+                            $tr.append($td);
+                            $td.html(response[i][question[j]]);
+
+                        }
+                    }
+
+
+                }
+            });
+        });
+    </script>
+</scipt>
+</body>
+</html>

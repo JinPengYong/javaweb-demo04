@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cheer.dao.AdminMapper">
+    <insert id="insert">
+    insert into admin value(#{username}, #{password})
+    </insert>
+    <select id="find" resultType="admin">
+    select * from admin where username = #{username}
+    </select>
+</mapper>
